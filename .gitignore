@@ -1,0 +1,28 @@
+# LaTeX build products
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+
+# Generated paper output
+/main.pdf
+
+# Temporary files
+*.tmp
+*.bak
+*~
+
+# Working notes stay untracked except the seed docs
+*.md
+!README.md
+!/docs/*.md
+
+.DS_Store
+.vscode/

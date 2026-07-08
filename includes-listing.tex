@@ -1,0 +1,171 @@
+% listings package configuration
+\usepackage{listings}
+\usepackage{fvextra}
+\usepackage{luacolor}
+\usepackage{lua-ul}
+%                         https://tex.stackexchange.com/a/466224/151207
+
+%\usepackage{xcolor} % Required for color definitions
+% see includes-colours.tex
+
+% Define custom colors
+\definecolor{keywordcolor}{rgb}{0.13,0.29,0.53}
+\definecolor{stringcolor}{rgb}{0.31,0.60,0.02}
+\definecolor{commentcolor}{rgb}{0.56,0.35,0.01}
+\definecolor{backcolor}{rgb}{0.95,0.95,0.92}
+
+\definecolor{codecolor}{rgb}{0.94, 0.92, 0.84} % default code background colour
+\definecolor{codeframe}{rgb}{0.84, 0.79, 0.69} % default code frame colour
+
+% Julia language definition
+\lstdefinelanguage{Julia}{
+	basicstyle=\linespread{3}\fontsize{7}{9}\selectfont\fontspec{Fira Code},
+	keywordsprefix=\@,
+	morekeywords={
+			exit,whos,edit,load,is,isa,isequal,typeof,tuple,ntuple,uid,hash,finalizer,convert,promote,
+			subtype,typemin,typemax,realmin,realmax,sizeof,eps,promote_type,method_exists,applicable,
+			invoke,dlopen,dlsym,system,error,throw,assert,new,Inf,Nan,pi,im,begin,while,for,in,return,
+			break,continue,macro,quote,let,if,elseif,else,try,catch,end,bitstype,ccall,do,using,module,
+			import,export,importall,baremodule,immutable,local,global,const,Bool,Int,Int8,Int16,Int32,
+			Int64,Uint,Uint8,Uint16,Uint32,Uint64,Float32,Float64,Complex64,Complex128,Any,Nothing,None,
+			function,type,typealias,abstract},
+	sensitive=true,
+	alsoother={$},
+	morecomment=[l]{\#},
+	morecomment=[s]{/*}{*/},
+	morestring=[b]",
+	morestring=[b]',
+}
+
+% General listings settings
+\lstset{% 
+	basicstyle=\linespread{1.3}\footnotesize\ttfamily,      % font size, mono font, 
+	% linespread fixes white tripes
+	backgroundcolor=\color{codecolor},  % background color
+	showspaces=false,              % show spaces (with underscores)
+	frame=single,                  % adds a frame around the code
+	tabsize=2,                     % default tabsize
+	breaklines=true,               % automatic line breaking
+	columns=fullflexible,
+	framerule=0.5pt,
+	rulecolor=\color{codeframe},
+	framesep=1em,                  % padding
+	xleftmargin=1em,
+	columns=fullflexible,          % make sure to use fixed-width font, CM typewriter is NOT fixed width
+	numbers=none,                  % left
+	numberstyle=\footnotesize\ttfamily\color{codeframe},
+	numbersep=5pt,                 % how far the line numbers are from the code
+	stepnumber=1,
+	numberfirstline=true,
+	numberblanklines=true,
+	tabsize=4,
+	lineskip=-1.5pt,
+	extendedchars=true,
+	mathescape=false,
+	breaklines=true,
+	keywordstyle=\color{keywordcolor}\bfseries,
+	identifierstyle=, % using emph or index keywords
+	commentstyle=\color{commentcolor},
+	stringstyle=\color{stringcolor},
+	showstringspaces=false,
+	showtabs=false,
+	upquote=false,
+	%texcl=true, % interpet comments as LaTeX
+	literate={_}{\_}1
+}
+
+% Robust inline code.  This uses fvextra's verbatim reader rather than wrapping
+% \lstinline in another macro, so raw underscores and long paths are safe.
+% commandchars keeps legacy notes such as \code{foo\_bar} readable.
+% Paper style: inline code as plain typewriter, no highlight background
+\renewcommand{\FancyVerbFormatInline}[1]{#1}
+\newcommand{\code}{\Verb[
+	breaklines=true,
+	breakanywhere=true,
+	breaksymbolleft={},
+	breaksymbolright={},
+	formatcom=\codeblockfont\small,
+	commandchars=\\\{\}
+]}
+\pdfstringdefDisableCommands{%
+	\def\code#1{#1}%
+}
+
+% Plain verbatim blocks. Keep this on FancyVerb/fvextra rather than listings:
+% listings inline state can leak into aux/toc writes in recent TeX Live.
+\makeatletter
+\define@key{FV}{plancolor}[]{\fvset{bgcolor=plancolor,fillcolor=\color{plancolor}}}
+\define@key{FV}{robocupcolor}[]{\fvset{bgcolor=robocupcolor,fillcolor=\color{robocupcolor}}}
+\define@key{FV}{sepiacolor}[]{\fvset{bgcolor=sepiacolor,fillcolor=\color{sepiacolor}}}
+\define@key{FV}{donecolor}[]{\fvset{bgcolor=donecolor,fillcolor=\color{donecolor}}}
+\makeatother
+\DefineVerbatimEnvironment{lstplain}{Verbatim}{
+	fontsize=\scriptsize,
+	baselinestretch=0.95,
+	formatcom=\codeblockfont,
+	breaklines=true,
+	breakanywhere=true,
+	breaksymbolleft={},
+	breaksymbolright={},
+	bgcolor=codecolor,
+	frame=single,
+	framerule=0.5pt,
+	framesep=1em,
+	xleftmargin=0em,
+	rulecolor=\color{codeframe},
+	fillcolor=\color{codecolor}
+}
+
+\DefineVerbatimEnvironment{vrb}{Verbatim}{
+	fontsize=\scriptsize,
+	baselinestretch=0.95,
+	formatcom=\codeblockfont,
+	breaklines=true,
+	breakanywhere=true,
+	breaksymbolleft={},
+	breaksymbolright={},
+	bgcolor=codecolor,
+	frame=single,
+	framerule=0.5pt,
+	framesep=1em,
+	xleftmargin=0em,
+	rulecolor=\color{codeframe},
+	fillcolor=\color{codecolor}
+}
+
+
+\lstnewenvironment{lstjulia}[1][codecolor]{
+	\lstset{% 
+		language=Julia,
+		basicstyle=\fontsize{7}{9}\selectfont\fontspec{Fira Code},
+		xleftmargin=0em,
+		backgroundcolor=\color{#1},
+		commentstyle=\color{commentcolor},
+		keywordstyle=\color{keywordcolor},
+		stringstyle=\color{stringcolor},
+		numberstyle=\tiny\color{gray},
+		breaklines=true,
+		showstringspaces=false,
+		frame=single,
+		tabsize=2,
+		literate={_}{\_}1
+	}
+}{}
+
+\lstnewenvironment{lstpython}[1][codecolor]{
+	\lstset{%
+		language=Python,
+		basicstyle=\fontsize{7}{9}\selectfont\fontspec{Fira Code},
+		xleftmargin=0em,
+		backgroundcolor=\color{#1},
+		commentstyle=\color{commentcolor},
+		keywordstyle=\color{keywordcolor},
+		stringstyle=\color{stringcolor},
+		numberstyle=\tiny\color{gray},
+		breaklines=true,
+		showstringspaces=false,
+		frame=single,
+		tabsize=2,
+		literate={_}{\_}1
+	}
+}{}

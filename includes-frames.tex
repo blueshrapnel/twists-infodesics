@@ -1,0 +1,175 @@
+\usepackage{mdframed}
+\mdfsetup{
+	leftmargin=-1em,
+	rightmargin=-1em,
+	middlelinewidth=1.5pt,
+	middlelinecolor=white,
+	innertopmargin=\topskip,
+	innerbottommargin=.50\topskip,
+	skipabove=0.5\baselineskip,
+	skipbelow=0,
+	nobreak=true
+}
+
+\newmdenv[
+	backgroundcolor = red!10
+]{wrong}
+
+\newmdenv[
+	backgroundcolor = green!10
+]{correct}
+
+% colours
+\colorlet{vlcolor}{brown!15}
+\definecolor{unired}{rgb}{0.8, 0.0, 0.0}
+\colorlet{coursescolor}{unired!15}
+\colorlet{robocupcolor}{lime!20}
+\colorlet{stridecolor}{lime!30}
+
+% frames to colour code topics
+% phd - all the following activities relate to my phd
+% problem
+% reading
+% coding
+% thinking
+% question
+% answer - never used
+% course - change to learning?
+% vl
+% robocup
+% writing
+% todo
+
+
+\newmdtheoremenv[backgroundcolor=cyan!30]{answer}{Answer}[section]
+
+\newmdtheoremenv[backgroundcolor=coursescolor]{course}{Course}[section]
+\newmdtheoremenv[backgroundcolor=coursescolor]{learning}{Learning}[section]
+\newmdtheoremenv[backgroundcolor=orange!20]{problem}{Problem}[section]
+
+% TODO heading style: bold title with optional short heading (no parentheses).
+\newtheoremstyle{todostyle}%
+	{0.5\baselineskip}{0.5\baselineskip}%
+	{\normalfont}{}%
+	{\normalfont\sffamily\color{titleblue}}%
+	{.}{0.5em}%
+	{\thmname{#1}\thmnote{ -- #3}}
+\theoremstyle{todostyle}
+\newmdtheoremenv[backgroundcolor=cyan!20]{todo}{TODO}
+\renewcommand{\thetodo}{} % remove numbering from todo
+\theoremstyle{definition}
+
+\newmdtheoremenv[backgroundcolor=cyan!15]{done}{Working}[section]
+
+\newcommand{\frameheading}[2]{%
+	{\color{titleblue}\sffamily\bfseries\fontsize{11}{14}\selectfont #1: \textsection\thesection\hspace{1em}#2}%
+}
+
+\newmdenv[backgroundcolor=mecolor!40,nobreak=false]{phd}
+\newcommand{\phdsec}[1]{%
+	\refstepcounter{section}
+	\addcontentsline{toc}{section}{\thesection\hspace{1em}PhD: #1}
+	\begin{phd}\frameheading{PhD}{#1}\end{phd}
+}
+
+\newmdtheoremenv[backgroundcolor=coursescolor]{research}{Research}
+\newcommand{\researchsec}[1]{%
+	\refstepcounter{section}
+	\addcontentsline{toc}{section}{\thesection\hspace{1em}Research: #1}
+	\begin{research}\frameheading{Research}{#1}\end{research}
+}
+
+\newmdenv[backgroundcolor=mecolor]{coding}
+\newcommand{\codingsec}[1]{%
+	\refstepcounter{section}
+	\addcontentsline{toc}{section}{\thesection\hspace{1em}Coding: #1}
+	\begin{coding}\frameheading{Coding}{#1}\end{coding}
+}
+
+\newmdenv[backgroundcolor=green!10,nobreak=false]{reading}
+\newcommand{\readingsec}[1]{%
+	\refstepcounter{section}
+	\addcontentsline{toc}{section}{\thesection\hspace{1em}Reading: #1}
+	\begin{reading}\frameheading{Reading}{#1}\end{reading}
+}
+
+\newmdenv[backgroundcolor=blue!20,nobreak=false]{thinking}
+\newcommand{\thinkingsec}[1]{%
+	\refstepcounter{section}
+	\addcontentsline{toc}{section}{\thesection\hspace{1em}Thinking: #1}
+	\begin{thinking}\frameheading{Thinking}{#1}\end{thinking}
+}
+
+\newmdenv[backgroundcolor=cyan!10]{meeting}
+\newcommand{\meetingsec}[1]{%
+	\refstepcounter{section}
+	\addcontentsline{toc}{section}{\thesection\hspace{1em}Meeting: #1}
+	\begin{meeting}\frameheading{Meeting}{#1}\end{meeting}
+}
+
+\newmdenv[backgroundcolor=green!30,nobreak=false]{question}
+\newcommand{\questionsec}[1]{%
+	\refstepcounter{section}
+	\addcontentsline{toc}{section}{\thesection\hspace{1em}Question: #1}
+	\begin{question}\frameheading{Question}{#1}\end{question}
+}
+
+\newmdenv[backgroundcolor=darkpastelpurple!25,nobreak=false]{workflow}
+\newcommand{\workflowsec}[1]{%
+	\refstepcounter{section}
+	\addcontentsline{toc}{section}{\thesection\hspace{1em}Workflow: #1}
+	\begin{workflow}\frameheading{Workflow}{#1}\end{workflow}
+}
+
+\newmdenv[backgroundcolor=stridecolor, nobreak=false]{stride}
+\newcommand{\stridesec}[1]{%
+	\refstepcounter{section}
+	\addcontentsline{toc}{section}{\thesection\hspace{1em}stride: #1}
+	\begin{stride}\frameheading{STRIDE}{#1}\end{stride}
+}
+
+\newmdenv[backgroundcolor=robocupcolor, nobreak=false]{robocup}
+\newcommand{\robocupsec}[1]{%
+	\refstepcounter{section}
+	\addcontentsline{toc}{section}{\thesection\hspace{1em}Robocup: #1}
+	\begin{robocup}\frameheading{Robocup}{#1}\end{robocup}
+}
+
+\newmdenv[backgroundcolor=robocupcolor, nobreak=false]{rl}
+\newcommand{\rlsec}[1]{%
+	\refstepcounter{section}
+	\addcontentsline{toc}{section}{\thesection\hspace{1em}RL: #1}
+	\begin{rl}\frameheading{RL}{#1}\end{rl}
+}
+
+\newmdtheoremenv[backgroundcolor=vlcolor]{vl}{VL}
+\newcommand{\vlsec}[1]{%
+	\refstepcounter{section}
+	\addcontentsline{toc}{section}{\thesection\hspace{1em}VL: #1}
+	\begin{vl}\frameheading{VL}{#1}\end{vl}
+}
+
+\newmdtheoremenv[backgroundcolor=vlcolor]{writing}{WRITING}
+\newcommand{\writingsec}[1]{%
+	\refstepcounter{section}
+	\addcontentsline{toc}{section}{\thesection\hspace{1em}WRITING: #1}
+	\begin{writing}\frameheading{writing}{#1}\end{writing}
+}
+
+
+
+\newmdenv[backgroundcolor=roamcolor, nobreak=false]{roam}
+\newcommand{\roamsec}[1]{%
+	\refstepcounter{section}
+	\addcontentsline{toc}{section}{\thesection\hspace{1em}Roam: #1}
+	\begin{roam}\frameheading{Roam}{#1}\end{roam}
+}
+
+\newmdenv[backgroundcolor=roamcolor, nobreak=false]{topic}
+\newcommand{\topicsec}[1]{%
+	\refstepcounter{section}
+	\addcontentsline{toc}{section}{\thesection\hspace{1em}Topic: #1}
+	\begin{topic}\frameheading{Topic}{#1}\end{topic}
+}
+
+%\newmdtheoremenv[backgroundcolor=lime!40]{section}{\thesection\hspace{1em}Robocup: #1}

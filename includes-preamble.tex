@@ -1,0 +1,188 @@
+%\usepackage[numbers, sort&compress, square]{natbib}
+
+% bib defintions moved back to master.tex
+%\usepackage[backend=biber, natbib=true, sorting=none, style=numeric]{biblatex}
+%\usepackage[backend=biber, natbib=true, style=apa]{biblatex}
+%\addbibresource{refs.bib}
+
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+% ------------------------------ setting up text fonts with Unicode coverage
+\setmainfont{DejaVu Sans}[
+	Scale=MatchLowercase,
+	BoldFont = DejaVu Sans,
+	BoldFeatures = {FakeBold=1.2},
+	ItalicFont = DejaVu Sans Oblique,
+	BoldItalicFont = DejaVu Sans Oblique,
+	BoldItalicFeatures = {FakeBold=1.2}
+]
+\setsansfont{DejaVu Sans}[
+	Scale=MatchLowercase,
+	BoldFont = DejaVu Sans,
+	BoldFeatures = {FakeBold=1.2},
+	ItalicFont = DejaVu Sans Oblique,
+	BoldItalicFont = DejaVu Sans Oblique,
+	BoldItalicFeatures = {FakeBold=1.2}
+]
+\renewcommand{\familydefault}{\sfdefault} % sets default document font to sans serif
+
+
+% ----------------------------- setting up math fonts
+
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\PassOptionsToPackage{warnings-off={mathtools-colon,mathtools-overbracket}}{unicode-math}
+\usepackage{unicode-math}
+\usepackage{mathrsfs}
+\setmathfont[Scale=0.89]{Fira Math}
+% Fira Math lacks a few symbols used in notes; fallback to Latin Modern for these glyphs.
+% TODO: revisit if Fira Math adds these glyphs.
+\setmathfont[Scale=0.89]{Latin Modern Math}[range={"225D,"22A4,"22A5,"22EE,"22F1}]
+% Use Computer Modern-like alphabets for calligraphic/script/Fraktur and \Im.
+\setmathfont[Scale=0.89]{Latin Modern Math}[range=\mathcal]
+\setmathfont[Scale=0.89]{Latin Modern Math}[range=\symcal]
+\setmathfont[Scale=0.89]{Latin Modern Math}[range=\mathfrak]
+\setmathfont[Scale=0.89]{Latin Modern Math}[range=\symfrak]
+\setmathfont[Scale=0.89]{Latin Modern Math}[range=\Im]
+% Use RSFS for script letters to keep \mathscr visually distinct.
+\DeclareSymbolFont{rsfs}{U}{rsfs}{m}{n}
+\DeclareSymbolFontAlphabet{\mathscr}{rsfs}
+
+% ------------------------------ setting up monospace font
+\setmonofont[
+	Scale=0.9,
+	BoldFont = * Bold,
+	ItalicFont = * Italic,
+	BoldItalicFont = * Bold Italic
+]{JetBrains Mono}
+
+\newfontfamily\nerdicons{JetBrainsMono Nerd Font}[Scale=MatchLowercase]
+\newfontfamily\codeblockfont{JetBrainsMono Nerd Font}[Scale=0.81]
+
+% ------------------------------ FiraFonts
+% https://github.com/matze/mtheme/issues/349#issuecomment-648055535
+%\usepackage[sfdefault]{FiraSans}
+%\usepackage{FiraMono}
+% Use thinner fonts
+\makeatletter
+\def\bfseries@sf{medium}
+% DejaVu Sans has no light series; use medium to avoid font warnings.
+\def\mdseries@sf{m}
+\makeatother
+
+% \usepackage{stix}
+%\usepackage[utf8]{inputenc}
+
+% ------------------------------ title format
+\usepackage{titlesec}
+\titleformat*{\section}{\normalfont\sffamily\bfseries\fontsize{12}{15}\selectfont\color{titleblue}}
+\titleformat*{\subsection}{\normalfont\sffamily\bfseries\fontsize{11}{14}\selectfont\color{titleblue}}
+\titleformat*{\subsubsection}{\normalfont\sffamily\bfseries\fontsize{10}{13}\selectfont\color{titleblue}}
+
+\usepackage{tocloft} % customise the table of contents
+
+
+\usepackage{tikz-cd}
+\usepackage{markdown}
+
+% --------------------- hyper links
+\usepackage{hyperref}
+\pdfstringdefDisableCommands{%
+	\def\mid{|}%
+	\def\alpha{𝛼}%
+	\def\Delta{Δ}%
+	\def\delta{δ}%
+	\def\mathcal#1{#1}%
+	\def\mathbb#1{#1}%
+	\def\mathrm#1{#1}%
+	\def\argmax{\textup{argmax}\ }%
+	\def\quad{ }%
+}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=black,
+	citecolor=black,
+	breaklinks=true,
+	% subsection depth: paragraph-level bookmarks trigger hyperref
+	% bookmark-level warnings at the model section's \paragraph headings
+	bookmarksdepth=2,
+	hypertexnames=false
+}
+
+
+%\let\hrefori\href%
+%\renewcommand{\href}[2]{\hrefori{#1}{\hl{#2}}}
+
+% --------------------- figure support
+% graphics and figures
+\usepackage{graphicx} % include graphics
+\usepackage[export]{adjustbox} % to vertically align figures
+\usepackage{wrapfig}
+\usepackage{svg}
+
+% subfigures
+\usepackage{subcaption}
+\renewcommand{\thesubfigure}{\Alph{subfigure}}
+
+\usepackage{import}
+\usepackage[shortlabels]{enumitem}
+\usepackage{xifthen}
+\usepackage{newunicodechar}
+
+\usepackage{pdfpages}
+\usepackage{transparent}
+\newcommand{\incfigroot}[1]{%
+	\def\svgwidth{\columnwidth}
+	\import{./}{#1.svg}
+}
+
+\usepackage[font=small,labelfont=bf]{caption}
+\captionsetup{justification=raggedright,singlelinecheck=false}
+% \pdfminorversion=7 % this doesn't work in lualatex
+% \pdfsuppresswarningpagegroup=1
+
+\usepackage{parskip}
+
+\newunicodechar{−}{\ensuremath{-}}
+\newunicodechar{}{{\nerdicons\symbol{"F023}}}
+\newunicodechar{}{{\nerdicons\symbol{"E0B1}}}
+
+% ----------------------- verbatim text like ` in markdown
+\usepackage{fancyvrb}
+\VerbatimFootnotes%       enable use of \Verb in footnotes
+%                         for code use listings package
+%\fvset{fontsize=\footnotesize\ttfamily}
+\makeatletter
+\def\verbatim@font{\ttfamily\small} % block verbatim (\begin{verbatim} …)
+\def\verb@font{\ttfamily\small}      % inline \verb|…|
+\makeatother
+
+
+
+\usepackage{xpatch}
+\usepackage{realboxes}
+\makeatletter
+\xpretocmd\lstinline{\Colorbox{codecolor}\bgroup\appto\lst@DeInit{\egroup}}{}{}
+\makeatother
+
+
+% ----------------------- quoting left bar
+\newcommand{\blockquote}[1]{%
+	\hspace{0.5em}\begin{tabular}{|p{0.95\textwidth}}#1% chktex 44
+	\end{tabular} \par
+
+}
+
+% ----------------------- tcolorbox
+\usepackage{tcolorbox}
+
+\tcbset{colframe=blue!25!black,colback=white!95!blue,colupper=blue!25!black,
+	fonttitle=\bfseries,nobeforeafter,center title}
+
+% ----------------------------------------   working with dates
+\usepackage[en-UK]{datetime2}
+
+% ----------------------------------------  horizontal rule
+\newcommand{\widerule}{\noindent\makebox[\textwidth][c]{\rule{0.85\paperwidth}{0.4pt}}}
+\newcommand\grayrule{{\color{gray} \noindent\makebox[\linewidth]{\rule{\paperwidth}{0.4pt}}}}

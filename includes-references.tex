@@ -1,0 +1,66 @@
+%\usepackage{hyperref}
+%\hypersetup{hidelinks}
+\usepackage{fontawesome}
+\usepackage{xifthen}% provides \isempty test
+\Urlmuskip=0mu plus 2mu\relax
+\newcommand\pdfref[3]{%
+    \href{phd://open-paper?id=#1&page=#2}{%
+    \textup{[\ifthenelse{\isempty{#3}}{here}{#3}]}}%
+}
+
+\newcommand\urlref[2]{%
+    \href{#1}{\raisebox{0.15ex}{\scriptsize \faLink}\:\textup{#2}}%
+}
+
+% \newcommand\urlref[2]{%
+%     \def\argone{#1} % Store the first argument (URL) in \argone
+%     \def\argtwo{#2} % Store the second argument (label) in \argtwo
+% 
+%     % Check if \argone is empty
+%     \ifx\argtwo\@empty
+%         \edef\argone{#1} % If \argone is empty, use \argtwo as URL
+%         \edef\argtwo{#1} % And use \argtwo for both URL and label
+%     \fi
+%     \href{\argone}{\raisebox{0.15ex}{\scriptsize \faLink}\:\textup{\textbf{\argtwo}}}%
+% }
+
+\newcommand{\dailyfilelabel}[1]{%
+    {\footnotesize\nolinkurl{#1}}%
+}
+
+\newcommand\absolutefileref[2]{%
+    \href{run:#1}{\raisebox{0.15ex}{\scriptsize \faFile}\:\textup{#2}}%
+}
+
+% this will contain the current date in yyyy-mm-dd format
+\def\formatteddate{}
+\newcommand\fileref[2]{
+    \IfFileExists{./\formatteddate/#1}{
+        \absolutefileref{./\formatteddate/#1}{#2}
+    }{
+        \textcolor{gray}{\absolutefileref{./\formatteddate/#1}{#2}}
+    }
+}
+ 
+% daily path reference
+\newcommand{\dailypath}{.\formatteddate\monthFolder\dayFolder}
+
+
+% daily file reference
+\newcommand{\dailyfileref}[1]{%
+  \fileref{\dailypath/#1}{\dailyfilelabel{#1}}%
+}
+
+% daily include graphic
+\newcommand{\fig}[1]{%
+  \includegraphics[width=0.98\textwidth]{\dailypath/#1}%
+}
+
+% daily include graphic with adjustable width
+\newcommand{\figw}[2]{%
+  \includegraphics[width=#2\textwidth]{\dailypath/#1}%
+}
+
+%\newcommand{\xournal}{\fileref{note.xopp}{Handwritten notes}}%
+
+%\newcommand{\pdfnotes}{\fileref{\monthFolder/\dayFolder/note.pdf}{Handwritten notes}}%

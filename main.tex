@@ -1,0 +1,193 @@
+\documentclass[a4paper, notitlepage, 11pt]{article}
+
+\usepackage[a4paper, left=17mm, bottom=17mm, right=35mm, top=17mm]{geometry}
+
+\input{includes-common}
+\newfontfamily\papercodeblockfont{JetBrainsMono Nerd Font}[Scale=MatchLowercase]
+\renewcommand{\codeblockfont}{\papercodeblockfont}
+
+\usepackage[backend=biber, natbib=true, style=apa]{biblatex}
+\addbibresource{refs.bib}
+
+\usepackage{float}
+
+\graphicspath{{figures/}}
+
+%%% Paper information
+\title{Habit cycles are infodesics:\\ segmentation and switching costs in twisted worlds}
+\author{%
+  Karen Archer\textsuperscript{1},\,
+  [co-authors TBC]%
+}
+\date{DRAFT SKELETON}
+
+\makeatletter
+\renewcommand{\@maketitle}{%
+  \begin{center}
+    {\Large\bfseries \@title \par}
+    \vspace{0.75em}
+    {\normalsize \@author \par}
+    \vspace{0.5em}
+    {\small \textsuperscript{1}Adaptive Systems Group, University of Hertfordshire, Hatfield, UK \par}
+    \vspace{0.5em}
+    {\small \@date \par}
+  \end{center}
+  \vspace{1em}
+}
+\makeatother
+
+% ---------------------------------------------------------------------------
+% SKELETON, seeded from docs/habit-cycles-as-infodesics.md (2026-07).
+% Paper 1 (twists-home-vectors) reports the habit structures empirically;
+% this paper gives the infodesic reading: why the structures are what they
+% are.  TODO markers reference the source assets:
+%   [NB:policy-switching]  gridFour/notebooks/decision-information/policy-switching.ipynb
+%   [NB:infodesics]        gridFour/notebooks/geometry-paper/infodesics/*
+%   [GB:01-03]             gridBench/notebooks/goal-geometry/01..03 (drift, corner law,
+%                          switching-cost matrix + log-domain fixed-reference solver)
+%   [S51]                  gridFour/notebooks/attractor-fingerprint-probe/51 (policy view)
+%   [RN:salient]           twists-home-vectors/research-notes.md (doorway salience,
+%                          rho = -0.76 with mean_free)
+%   [CG]                   cognitive-geom-paper/cognitive-geometry.tex §Infodesics
+% ---------------------------------------------------------------------------
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+% DRAFT — one paragraph, to be rewritten once results are in.
+A twist relabels an agent's actions per state.  Optimised twists build
+\emph{habit cycles}: attractors that a single repeated action label drains
+the environment into.  A companion paper characterises these structures
+empirically; this paper explains them.  We show that a repeated-label flow
+is a pure \emph{infodesic} in the space-of-goals geometry --- a route
+followable with no state information --- and that the asymmetric homing
+mode is a \emph{cost infodesic} segmented at informationally salient
+waypoints: the free-energy triangle inequality fails across goal-specific
+policies, policy switching becomes advantageous, and the doorway states at
+which switches occur are exactly where the evolved label vocabulary changes
+hands.  Curvature, concentrated at walls, is the knob: where the world is
+flat the pure infodesic, the value geodesic, and the cost infodesic
+coincide and homing saturates; where walls concentrate curvature the desics
+split, routes segment into single-label legs, and the home-plus-escape
+vocabulary of the companion paper emerges.  Switching costs quantify the
+segmentation: the cost of abandoning a habit decomposes into an ambient
+term set by the environment's drift and a dominant policy-specific term set
+by the habit being abandoned.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:intro}
+
+% TODO: city-directions -> habit framing, one paragraph; then the gap:
+% paper 1 reports WHAT evolved twists build (homing labels, coverage
+% typology, label roles); this paper asks WHY those structures and not
+% others.  The answer is geometric: they are the infodesics of the
+% free-energy geometry.
+%
+% Key sentence from the note: this is not a resurrected side-thread; the
+% infodesic is the live, central object of the cognitive-geometry
+% programme, continuous from the Space of Goals paper (2022) through the
+% current geodesic--loxodrome--curvature work.
+
+\section{Background: the free-energy geometry and its desics}
+\label{sec:background}
+
+% TODO [CG]: import the definitions --
+%   free energy F as quasi-metric on goals; pure infodesic (state-blind
+%   route, I_D -> 0); cost infodesic (F-optimal route, triangle equality);
+%   epsilon-infodesic gap; value geodesic; loxodrome/constant-bearing
+%   reading.
+% TODO [NB:policy-switching]: restate the concluded result -- the
+% free-energy triangle inequality FAILS across goal-specific policies and
+% multi-policy processing sharply reduces information cost.  This is the
+% formal seed of segmentation.  Re-verify on the gridcore kernel (fast;
+% the fixed-reference log-domain solver in [GB:03] is the tool).
+
+\section{Single-label flows are pure infodesics}
+\label{sec:pure}
+
+% From the note, near-verbatim draft:
+A pure infodesic is a sequence visitable with no state information ---
+action selection independent of state, decision information
+$\ItgD \to 0$: following the same direction with as little cognitive
+correction as possible.  A single-label flow is exactly that.  Press one
+label in every state: the label is state-independent even though the twist
+makes the \emph{physical} direction vary cell to cell.  The home vector of
+the companion paper is the direction field of a pure infodesic; the habit
+cycle is the attractor the pure infodesic drains into --- its terminus.
+The habit is the whole pure-infodesic object: flow plus limit set.
+
+% TODO figure: single-label flow on the exemplar twist, annotated as an
+% infodesic (reuse [S51] policy-view panel 1 machinery, goal-free variant).
+
+\section{The asymmetric mode is a segmented cost infodesic}
+\label{sec:segmentation}
+
+% From the note -- the role mapping to be expanded into prose + table:
+%   home label            <-> one pure-infodesic leg
+%   directed-escape label <-> the policy switch to a second leg
+%   doorway               <-> informationally salient midpoint / subgoal
+%   silenced label        <-> the deficient / trivial part
+%
+% TODO [S51]: the policy-view routes ARE the segmentation figure -- greedy
+% routes switch labels at room seams; each leg is single-label.
+% TODO [RN:salient]: doorway-salience correlates with low free energy
+% (Spearman rho = -0.758 with mean_free over the salience-evaluated pool)
+% -- the waypoints the segmentation predicts are the states selection
+% already favours routing through.  Recompute on the clean cohort.
+
+\section{Switching costs quantify the segmentation}
+\label{sec:switching}
+
+% TODO [GB:01-03]: port the switching-cost machinery --
+%   SC(A->B) = F_B^{ref=pi_A}(A), log-domain fixed-reference solver;
+%   H1 ambient drift predicts a minority share (r = 0.52, slope 7.3);
+%   H2 policy-specific asymmetry dominates (14.5x the uniform-prior skew);
+%   H3 the sink field survives the change of reference (r = 0.68).
+% Reading: the cost of abandoning a habit = ambient floor (environment
+% drift) + dominant policy-specific term (the particular habit abandoned).
+% TODO: notebook 04 (repertoire decomposition I(A;S,G) = I(A;S) + I(A;G|S))
+% belongs here if it matures.
+
+\section{Curvature explains the bimodality}
+\label{sec:curvature}
+
+% From the note:
+% - flat worlds (wrap_grid): pure infodesic = value geodesic = cost
+%   infodesic coincide -> one constant-direction label is also shortest ->
+%   total saturation, no switching.  The habit IS the geodesic.
+% - walled worlds: curvature concentrated at walls/doorways -> the desics
+%   split, the cost infodesic goes deficient -> routes segment -> the
+%   home + directed-escape structure.  The deficiency IS the need for the
+%   escape label.
+% - a twist is a global action labelling on a possibly non-flat space; its
+%   holonomy is the I_D cost the geometry forces (chi as holonomy: TODO
+%   formalise or demote to remark).
+% - beta places evolved habits at the loxodromic (cheap, far-predictable)
+%   end of the loxodrome <-> geodesic interpolation.
+
+\section{Experiments}
+\label{sec:experiments}
+
+% TODO plan (all machinery exists):
+% 1. Triangle-inequality violation, systematically: fraction of goal
+%    triples violating, by environment and beta [NB:policy-switching,
+%    gridcore port].
+% 2. Segmentation observed: label-switch points along greedy routes vs
+%    doorway/salience sets on the clean cohort [S51 + RN:salient].
+% 3. Switching-cost decomposition across the palette [GB:03 scaled up].
+% 4. Curvature axis: flat -> pillar -> four_rooms sweep; where do the
+%    desics split? (new, but cheap with the gridcore kernel).
+
+\section{Discussion}
+\label{sec:discussion}
+
+% TODO: habits as the cheap extreme of the infodesic family; place-graph
+% (Mallot) as the segmentation's navigation reading; bridge to QD /
+% skill-composition as the search-side continuation.
+
+\printbibliography
+
+\end{document}

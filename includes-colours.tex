@@ -1,0 +1,58 @@
+\usepackage[table]{xcolor}
+
+% --------------------------------- colours for content categories
+% some colours taken from https://latexcolor.com
+\definecolor{codecolor}{rgb}{0.94, 0.92, 0.84}
+\definecolor{codeframe}{rgb}{0.84, 0.79, 0.69}
+\definecolor{bright_green}{rgb}{0.5, 1.0, 0.0}
+\definecolor{amber}{rgb}{1.0, 0.75, 0.0}
+\definecolor{brickred}{rgb}{0.8, 0.25, 0.33}
+\definecolor{bostonuniversityred}{rgb}{0.8, 0.0, 0.0}
+\definecolor{carminered}{rgb}{1.0, 0.0, 0.22}
+\definecolor{awesome}{rgb}{1.0, 0.13, 0.32}
+\definecolor{darkpastelpurple}{rgb}{0.59, 0.44, 0.84}
+\definecolor{titleblue}{rgb}{0.2, 0.2, 0.6}
+\definecolor{blush}{rgb}{0.87, 0.36, 0.51}
+
+% set faint color workaround
+\colorlet{highlight}{yellow!25}
+\colorlet{objective}{carminered!35}
+\colorlet{derivation}{pink!50}
+\colorlet{grey}{gray!10}
+\colorlet{basics}{gray!20}
+\colorlet{information}{darkpastelpurple!25}
+\colorlet{definition}{orange!10!yellow!30}
+\colorlet{surprising}{blue!20}
+\colorlet{conclusion}{cyan!20}
+\colorlet{donecolor}{cyan!10}
+\colorlet{method}{orange!30}
+\colorlet{reference}{green!15}
+
+\colorlet{mecolor}{bright_green!50}
+\colorlet{roamcolor}{brown!20}
+\colorlet{plancolor}{amber!15}
+\colorlet{sepiacolor}{darkpastelpurple!20}
+% ----------------------- highlighting
+\usepackage{soul}
+\sethlcolor{highlight}
+\DeclareRobustCommand{\hlobj}[1]{{\sethlcolor{objective}\hl{#1}}}
+\DeclareRobustCommand{\hlred}[1]{{\sethlcolor{objective}\hl{#1}}}
+\DeclareRobustCommand{\hlpink}[1]{{\sethlcolor{derivation}\hl{#1}}}
+\DeclareRobustCommand{\hlderiv}[1]{{\sethlcolor{derivation}\hl{#1}}}
+\DeclareRobustCommand{\hlgen}[1]{{\sethlcolor{basics}\hl{#1}}}
+\DeclareRobustCommand{\hlgrey}[1]{{\sethlcolor{basics}\hl{#1}}}
+\DeclareRobustCommand{\ai}[1]{{\sethlcolor{grey}\hl{#1}}}
+\DeclareRobustCommand{\hldef}[1]{{\sethlcolor{definition}\hl{#1}}}
+\DeclareRobustCommand{\hlyellow}[1]{{\sethlcolor{definition}\hl{#1}}}
+\DeclareRobustCommand{\hlaha}[1]{{\sethlcolor{surprising}\hl{#1}}}
+\DeclareRobustCommand{\hlpurple}[1]{{\sethlcolor{surprising}\hl{#1}}}
+\DeclareRobustCommand{\hlcon}[1]{{\sethlcolor{conclusion}\hl{#1}}}
+\DeclareRobustCommand{\hlblue}[1]{{\sethlcolor{conclusion}\hl{#1}}}
+\DeclareRobustCommand{\hlmth}[1]{{\sethlcolor{method}\hl{#1}}}
+\DeclareRobustCommand{\hlorange}[1]{{\sethlcolor{method}\hl{#1}}}
+\DeclareRobustCommand{\hlref}[1]{{\sethlcolor{reference}\hl{#1}}}
+\DeclareRobustCommand{\hlgreen}[1]{{\sethlcolor{reference}\hl{#1}}}
+
+\DeclareRobustCommand{\hlcyan}[1]{{\sethlcolor{conclusion}\hl{#1}}}
+\DeclareRobustCommand{\hlcode}[1]{{\sethlcolor{codecolor}\hl{#1}}}
+\DeclareRobustCommand{\hlme}[1]{{\sethlcolor{mecolor}\hl{#1}}}

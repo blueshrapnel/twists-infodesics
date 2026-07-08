@@ -1,0 +1,61 @@
+% adjusting the formatting for the phantom sections / parts in the toc
+\setlength{\cftbeforepartskip}{0.5em}  % adjust the spacing before
+\setlength{\cftbeforesecskip}{0.5em}  % adjust the spacing before
+
+% widen the number boxes so multi-digit section numbers don't collide with titles
+\setlength{\cftsecnumwidth}{3.2em}
+\setlength{\cftsubsecnumwidth}{3.8em}
+\setlength{\cftsubsubsecnumwidth}{4.4em}
+
+% adjusting font size and font series for different content types
+\renewcommand{\cftpartfont}{\small\bfseries} % part 
+\renewcommand{\cftsecfont}{\small\sffamily}
+\renewcommand{\cftsubsecfont}{\small\sffamily}
+\renewcommand{\cftsubsubsecfont}{\footnotesize\sffamily}
+
+% change the font size of the page numbers for various content types
+\renewcommand{\cftpartpagefont}{\small}          %  part page numbers
+\renewcommand{\cftsecpagefont}{\small}           %  section page numbers
+\renewcommand{\cftsubsecpagefont}{\small}        %  subsection page number
+\renewcommand{\cftsubsubsecpagefont}{\footnotesize}     %  subsubsection page number
+
+\cftpagenumbersoff{subsubsection}
+
+% for a solid leader line 
+% define custom line fill
+\newcommand{\cftlinefill}[1]{%
+	\leavevmode\leaders\hrule height #1\hfill\kern0.5em
+}
+
+% Leader lines 
+\renewcommand{\cftpartleader}{{\color{gray}\cftlinefill{0.1pt}}}
+%\renewcommand{\cftpartleader}{\cftdotfill{\cftdotsep}} % Use dot leaders for parts
+\renewcommand{\cftsecleader}{{\cftlinefill{0.1pt}}}
+\renewcommand{\cftsubsecleader}{\hfill}
+\renewcommand{\cftsubsubsecleader}{\hfill}
+
+
+
+% Define a new counter for days
+\newcounter{daycount}
+\setcounter{daycount}{0}
+
+\newcommand{\daymarker}[1]{%
+	% Use the provided date shorthand to format the date
+	% Assuming #1 is a formatted string using PGF/TikZ date tools
+	% example usage 
+	%     \daymarker{\d y0-\d m0-\d d0}
+	%     \daymarker{\d wt, \d d0 \d m. }
+
+	\phantomsection % part of hyperref package - creates an anchor without a new section
+	\addcontentsline{toc}{part}{#1}
+	% Display the marker in the document, if needed
+	%\textbf{#1} % Example placement, adjust as necessary
+	\ifdate{equals=\firstdate}{}{%
+		\bigskip
+		\ifdate{Monday}{\grayrule\\[-22pt]\grayrule}{\grayrule}
+	}%
+	\vspace*{1em}
+	\marginpar{\vspace*{1em}\textsf{ \d w., \d m. \d d- }}%
+	\stepcounter{daycount} % Increment the day counter
+}

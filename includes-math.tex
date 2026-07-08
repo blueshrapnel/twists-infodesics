@@ -1,0 +1,50 @@
+% ------------------------------ define equals
+% also \coloneqq and \eqqcolon from mathtools imported below
+\newcommand{\defeq}{\vcentcolon=}
+\newcommand{\eqdef}{=\vcentcolon}
+
+% ------------------------------ Expectation, Var and Covar symbol
+% when declaring math operators the * denotes the use of limits above and/or below
+\DeclareMathOperator*{\E}{\mathbb{E}}
+\DeclareMathOperator*{\Var}{\operatorname{Var}}
+\DeclareMathOperator*{\Cov}{\operatorname{Cov}}
+
+
+% ----------------------------- set complement
+\newcommand{\stcomp}[1]{{#1}^{\mathsf{c}}}
+% ----------------------------- argmax and argmin
+\DeclareMathOperator*{\argmax}{arg\,max\,}
+\DeclareMathOperator*{\argmin}{arg\,min\,}
+
+% ----------------------------- transpose and other matrix notation
+% https://tex.stackexchange.com/a/217623/151207
+% unicode-math not supported in pdftex
+% \usepackage{mathtools} % in preamble
+%\usepackage{unicode-math}
+\newcommand*{\matr}[1]{\mathbf{#1}}
+\newcommand*{\tran}{^{\mkern-1.5mu\mathsf{T}}}
+\newcommand*{\conj}[1]{\overline{#1}}
+\newcommand*{\hermconj}{^{\mathsf{H}}}
+% trace of a matrix
+\DeclareMathOperator{\Tr}{Tr}
+% cardinality of a matrix and vector
+\newcommand{\matdim}[2]{\mathsf{\textit{#1}\times\textit{#2}}}
+\newcommand{\vecdim}[1]{\mathsf{\textit{#1}}}
+
+% Define a command for a placeholder matrix with dimensions m x n
+\newcommand{\matblock}[3]{
+	\begin{bmatrix}
+		#1_{\mathsf{\textit{1,1}}}  & \cdots & #1_{\mathsf{\textit{1,#3}}}  \\
+		\vdots                      & \ddots & \vdots                       \\
+		#1_{\mathsf{\textit{#2,1}}} & \cdots & #1_{\mathsf{\textit{#2,#3}}}
+	\end{bmatrix}
+}
+
+% Define a command for a placeholder vector with dimension m
+\newcommand{\vecblock}[2]{
+	\begin{bmatrix}
+		#1_{\mathsf{\textit{1}}} \\
+		\vdots                   \\
+		#1_{\mathsf{\textit{#2}}}
+	\end{bmatrix}
+}

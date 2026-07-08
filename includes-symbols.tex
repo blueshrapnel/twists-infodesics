@@ -1,0 +1,45 @@
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\renewcommand{\L}{\mathcal{L}}
+% ...
+% Information to go symbol
+\usepackage{scalerel}    % required for scaleto
+% Information-to-go symbol (bold imaginary unit)
+\newcommand{\Itg}{\ensuremath{\pmb{\Im}}}
+% Decision information symbol
+\newcommand{\ItgD}{\ensuremath{\pmb{\symcal{I}}}}
+% Environmental response / empowerment-like information
+\newcommand{\ItgE}{\ensuremath{\pmb{\symcal{E}}}}
+% empowerment (maximised over policies)
+\newcommand{\emp}{\ensuremath{\mathfrak{E}}}
+
+% Uniform distribution
+\newcommand{\U}{\ensuremath{\mathrm{U}}}
+
+% Action/state set symbols
+\renewcommand{\S}{\ensuremath{\mathcal{S}}}
+\newcommand{\A}{\ensuremath{\mathcal{A}}}
+
+% Free energy and policy notation
+\newcommand{\Fen}{\ensuremath{\pmb{\symcal{F}}}}
+\newcommand{\pif}{{\ensuremath{\pi_{\scaleto{\Fen}{3pt}}}}}
+\newcommand{\piv}{{\ensuremath{\pi_{\scaleto{V}{3pt}}}}}
+% Leg subpolicies and glued composite (space-of-goals sup-matl convention)
+\newcommand{\pifi}[1]{{\ensuremath{\pi_{\scaleto{\Fen}{3pt}}^{\scaleto{(#1)}{4pt}}}}}
+\newcommand{\pifhat}{{\ensuremath{\hat{\pi}_{\scaleto{\Fen}{3pt}}}}}
+% Triangle-inequality defect: composite (legs) minus direct.
+% Paper / epsilon-infodesic sign:  \dFen < 0  <=>  switching helps (deficiency).
+\newcommand{\dFen}{\ensuremath{\Delta\Fen}}
+% mu-referenced open-loop action marginal (January reworking): \phatmu(a)=sum_s mu(s) pi(a|s)
+\newcommand{\phatmu}{\ensuremath{\hat p^{\mu}}}
+
+% Short arrow symbols used for action sets (copied from progression-report includes-preamble).
+\usepackage{stmaryrd}
+\makeatletter
+\newcommand{\fixed@sra}{$\vrule height 2\fontdimen22\textfont2 width 0pt\shortrightarrow$}
+\newcommand{\shortarrow}[1]{%
+  \mathrel{\text{\rotatebox[origin=c]{\numexpr#1*45}{\fixed@sra}}}
+}
+\makeatother
