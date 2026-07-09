@@ -94,21 +94,48 @@ by the habit being abandoned.
 \section{Background: the free-energy geometry and its desics}
 \label{sec:background}
 
-% TODO [CG]: import the definitions --
-%   free energy F as quasi-metric on goals; pure infodesic (state-blind
-%   route, I_D -> 0); cost infodesic (F-optimal route, triangle equality);
-%   epsilon-infodesic gap; value geodesic; loxodrome/constant-bearing
-%   reading.
-% TODO [NB:policy-switching]: restate the concluded result -- the
-% free-energy triangle inequality FAILS across goal-specific policies and
-% multi-policy processing sharply reduces information cost.  This is the
-% formal seed of segmentation.  Re-verify on the gridcore kernel (fast;
-% the fixed-reference log-domain solver in [GB:03] is the tool).
+% TODO: reconcile notation with cognitive-geometry.tex §Infodesics before
+% submission; definitions below are the working forms.
+
+For an informationally bounded agent, the cost of reaching a goal $g$ from
+a state $s$ is the free energy of the goal-optimal policy,
+$\Fen_g(s) = -V^{\pi^*}(s) + \beta^{-1} \ItgD^{\pi^*}(s)$: expected path
+cost plus the decision information the route demands, weighed by the
+agent's parsimony $\beta$.  Collecting these values over all ordered pairs
+gives a cost matrix $D[s, g] = \Fen_g(s)$ --- a quasi-metric on the world:
+non-negative, zero on the diagonal, and in general \emph{asymmetric},
+because moving with a prevailing structure costs less information than
+moving against it.
+
+Routes through this geometry come in kinds.  A \emph{pure infodesic} is a
+route followable with no state information at all: action selection
+independent of state, $\ItgD \to 0$ --- following the same command
+everywhere, the informational analogue of a loxodrome's constant bearing.
+A \emph{value geodesic} is a shortest route in the expected-cost sense
+alone.  A \emph{cost infodesic} is a route optimal in the full free
+energy; on such a route through an intermediate $B$, the triangle
+inequality
+\[
+  D[A, C] \;\leq\; D[A, B] + D[B, C]
+\]
+holds with equality.  Where the triangle inequality \emph{fails} ---
+$D[A, B] + D[B, C] < D[A, C]$ --- reaching $C$ via $B$, abandoning the
+goal-$C$ policy at $B$ for a fresh one, is strictly cheaper than the
+direct route: multi-policy processing beats single-policy processing, and
+the optimal behaviour \emph{segments} at $B$.  The states at which such
+segmentation is profitable are the geometry's informationally salient
+waypoints.
+
+On a flat, translation-invariant world these three notions collapse: one
+constant command is also shortest and also free-energy-optimal, and no
+segmentation ever pays.  Where structure --- walls, doorways, seams ---
+concentrates curvature, the desics separate, and the question of this
+paper is what evolution does about it when it is allowed to redesign the
+action labels themselves.
 
 \section{Single-label flows are pure infodesics}
 \label{sec:pure}
 
-% From the note, near-verbatim draft:
 A pure infodesic is a sequence visitable with no state information ---
 action selection independent of state, decision information
 $\ItgD \to 0$: following the same direction with as little cognitive
@@ -119,24 +146,113 @@ the companion paper is the direction field of a pure infodesic; the habit
 cycle is the attractor the pure infodesic drains into --- its terminus.
 The habit is the whole pure-infodesic object: flow plus limit set.
 
-% TODO figure: single-label flow on the exemplar twist, annotated as an
-% infodesic (reuse [S51] policy-view panel 1 machinery, goal-free variant).
+This identification does real work.  It explains why decision-information
+descent builds habit cycles at all: the fitness rewards routes that
+approach pure infodesics, and under a twist the set of realisable pure
+infodesics is exactly the set of single-label flows --- so evolution
+shapes $\sigma$ until some label's flow is worth following from almost
+anywhere.  It also assigns the correct formal role to the attractor: the
+cycle is not a defect of the flow but its goal, the recurrent set the
+open-loop policy is \emph{for}.
+
+% TODO figure: single-label flow on the exemplar twist annotated as an
+% infodesic (policy-view panel machinery, goal-free variant).
 
 \section{The asymmetric mode is a segmented cost infodesic}
 \label{sec:segmentation}
 
-% From the note -- the role mapping to be expanded into prose + table:
-%   home label            <-> one pure-infodesic leg
-%   directed-escape label <-> the policy switch to a second leg
-%   doorway               <-> informationally salient midpoint / subgoal
-%   silenced label        <-> the deficient / trivial part
-%
-% TODO [S51]: the policy-view routes ARE the segmentation figure -- greedy
-% routes switch labels at room seams; each leg is single-label.
-% TODO [RN:salient]: doorway-salience correlates with low free energy
-% (Spearman rho = -0.758 with mean_free over the salience-evaluated pool)
-% -- the waypoints the segmentation predicts are the states selection
-% already favours routing through.  Recompute on the clean cohort.
+\paragraph{Segmentation is a walled-world phenomenon.}  We measured the
+triangle inequality systematically: for each environment and
+$\beta \in \{0.3, 1, 3\}$, every ordered goal triple $(A, B, C)$ of the
+Cartesian world, a violation being a strictly cheaper segmented route
+(Figure~\ref{fig:triangle}).  The dichotomy is clean.  Flat worlds ---
+the torus and the bounded open grid --- produce \emph{zero} violating
+triples at every $\beta$: the maximum gap is strictly negative, no policy
+switch ever pays, and the desics coincide as Section~\ref{sec:background}
+predicts.  Walled worlds violate: on \code{four\_rooms} one in six
+ordered pairs has a profitable midpoint; the corridor ring violates on
+$3$--$4\%$ of triples.  The gap is informational in origin: its maximum
+grows as $\beta$ falls ($1.1 \to 3.4 \to 11.0$ bits-equivalent across
+$\beta = 3 \to 1 \to 0.3$ on \code{four\_rooms}) --- value alone
+satisfies the triangle inequality, and it is the information cost of one
+policy serving a two-legged route that makes segmentation pay, amplified
+by parsimony.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.98\textwidth]{F-triangle-violation.png}
+  \caption[Triangle-inequality violation across the palette]{Triangle
+  violations in the Cartesian free-energy geometry.  \emph{Left:}
+  violating fraction of ordered goal triples by environment and $\beta$
+  --- zero on flat worlds at every $\beta$.  \emph{Middle:} gap
+  distributions at $\beta = 1$ (positive = segmenting is cheaper).
+  \emph{Right:} where the profitable midpoints sit on
+  \code{four\_rooms}: flanking the doorways.}
+  \label{fig:triangle}
+\end{figure}
+
+\paragraph{The waypoints are the doorway flanks --- and behaviour
+agrees.}  The profitable midpoints do not sit \emph{on} the doorway
+cells but one step past them.  The behavioural face of the same fact:
+rolling greedy routes for every start--goal pair and recording where the
+issued label changes, the switch rate per visit is exactly zero at the
+doorway cells under the Cartesian labelling and maximal on their flanks
+($0.46$ against $0.38$ elsewhere) --- the flow passes \emph{through} a
+door; the decision happens after crossing (Figure~\ref{fig:switch}).
+Geometry predicts behaviour: per-state switch events correlate with
+profitable-midpoint counts at $r = 0.72$.  The flat control switches
+\emph{more} overall ($0.47$ per step against $0.37$) but with no spatial
+structure: plenty of switching, no waypoints.  Segmentation, on both the
+geometric and the behavioural ledger, is what walls make.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.98\textwidth]{F-segmentation-switch-points.png}
+  \caption[Switch points along greedy routes]{Label-switch locations
+  along greedy routes (switch rate per visit; doorways outlined).
+  Cartesian \code{four\_rooms}, the evolved exemplar twist, and the flat
+  control; right, geometry against behaviour.  Doors are corridors, not
+  decision points; the twist needs $40\%$ fewer switches; the flat world
+  switches everywhere and nowhere in particular.}
+  \label{fig:switch}
+\end{figure}
+
+\paragraph{What the twist does to the geometry --- the refuted
+prediction.}  If the evolved twist internalises route structure, one
+might expect the twisted world's geometry to offer \emph{fewer}
+profitable segmentation points.  The opposite holds
+(Figure~\ref{fig:twist-triangle}): on the exemplar twist the violating
+pairs multiply from $258$ to $610$ of $1{,}560$, at every $\beta$, with
+larger gaps --- while the mean direct cost falls.  The twist does not
+flatten the cost geometry; it \emph{curves it further}.  The labelling
+installs a strong drift field --- the homing flow --- and a directional
+geometry is precisely one in which two-leg routes, riding one flow and
+then another, undercut direct ones.  There is no tension with the
+behavioural switch reduction above: the optimal policies issue fewer
+switch \emph{events} because each label now serves a longer leg, while
+the geometry affords more profitable re-planning points because the
+flows are stronger.  Behaviour segments less; geometry affords more.
+Evolution does not straighten the free-energy geometry --- it bends it
+so that its own habit legs are the cheap segments, which is what it
+means, in geometric terms, for the representation to have absorbed the
+segmentation.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{F-triangle-twist-vs-cartesian.png}
+  \caption[Twist-side triangle violations]{Profitable-midpoint counts,
+  Cartesian against the evolved exemplar twist (\code{four\_rooms},
+  $\beta = 1$).  The twist multiplies profitable segmentation pairs
+  ($610$ against $258$ of $1{,}560$) while lowering mean direct cost:
+  the geometry is bent, not flattened.}
+  \label{fig:twist-triangle}
+\end{figure}
+
+% TODO [RN:salient]: doorway-salience correlation (rho = -0.76 with mean
+% free energy) recomputed on the clean cohort joins here as the
+% selection-side evidence that the waypoints are favoured.
+% TODO: overlap statistics of twisted midpoints vs the home cycle and
+% the drift-sink field; cohort-level replication beyond the exemplar.
 
 \section{Switching costs quantify the segmentation}
 \label{sec:switching}
