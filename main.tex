@@ -13,6 +13,11 @@
 
 \graphicspath{{figures/}}
 
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+
 %%% Paper information
 \title{Habit cycles are infodesics:\\ segmentation and switching costs in twisted worlds}
 \author{%
@@ -257,7 +262,188 @@ segmentation.
 \section{Switching costs quantify the segmentation}
 \label{sec:switching}
 
-% TODO [GB:01-03]: port the switching-cost machinery --
+Section~\ref{sec:segmentation} located where segmentation pays; this
+section prices the switch.  The Space-of-Goals programme
+\citep{Archer2022-space-of-goals} left exactly this as its central open
+item: a conjectured \emph{relaxed} triangle inequality
+$\Fen_g(s) \leq \Fen_{s'}(s) + \Fen_g(s') + C_{\mathrm{switch}}$, with
+$C_{\mathrm{switch}}$ read as a \emph{disambiguation} cost --- zero when
+the two legs' trajectory supports do not overlap, and otherwise the
+entropy of section membership accumulated over the shared states.  We
+tested that reading and refuted it; the corrected theory is stated below
+and validated to numerical precision.
+
+\paragraph{Setup.}  For a memoryless policy $\pi$ and a
+\emph{state-independent} reference distribution $q$ over actions, write
+\[
+  \Fen^{\pi, q}_g(s) \;=\;
+  \mathbb{E}^{\pi}_s \Big[ \textstyle\sum_{t < \tau_g}
+  \big( -r_t + \tfrac{1}{\beta}
+  \log_2 \tfrac{\pi(a_t \mid s_t)}{q(a_t)} \big) \Big].
+\]
+The free energy of Section~\ref{sec:background} is the self-consistent
+object $\Fen_g = \Fen^{\pi_g, \hat{p}_g}_g$, with
+$(\pi_g, \hat{p}_g)$ the Blahut--Arimoto fixed point: each goal's
+optimal policy is priced against its \emph{own} converged action
+marginal.  Two facts carry the section.  First, for fixed $\pi$ the
+reference minimising $\Fen^{\pi,q}$ is the route's visit-weighted action
+marginal $\rho(a) = n^{-1} \sum_x \nu(x)\, \pi(a \mid x)$, where
+$\nu(x)$ counts expected decisions at $x$ and $n = \sum_x \nu(x)$ is the
+expected route length.  Second, swapping the reference has an
+\emph{exact} price --- no bound, an identity:
+\begin{equation}
+  \Delta(q) \;\defeq\; \Fen^{\pi, q} - \Fen^{\pi, \rho}
+  \;=\; \tfrac{n}{\beta}\, D_{\mathrm{KL}}\!\left( \rho \,\middle\|\, q \right).
+  \label{eq:prior-swap}
+\end{equation}
+
+\paragraph{The disambiguation reading fails.}  We priced every ordered
+goal triple $(A, B, C)$ under three switching-cost models: a one-off bit
+per switch; the conjecture's literal form (per-decision membership
+entropy, accumulated over the support overlap, weighted by visitation);
+and a sharper per-state variant that charges only where the two segment
+policies disagree.  None restores the triangle inequality: on
+\code{four\_rooms} the literal form covers only $17$--$88\%$ of
+violating triples (worse as $\beta$ rises), the per-state variant
+$3$--$32\%$, and the one-off bit misses the entire tail.  Decisively,
+the \emph{worst} violations sit on triples whose segments barely overlap
+($\sim 0.01$ expected shared visits, against a median of $1$--$2$ on
+non-violating triples), and the gap is uncorrelated with every
+identification cost ($|r| < 0.12$).  Overlap is not the source of the
+breakage.
+
+\paragraph{The violation is prior specialisation.}  Reprice leg one
+under the direct problem's own converged marginal --- solve the
+$A \to B$ leg with the reference held at $\hat{p}_C$ instead of
+$\hat{p}_B$ --- and every violation collapses: zero triples above solver
+noise, across environments, $\beta \in \{0.3, 1, 3\}$, and all six
+labelling frames tested below (Figure~\ref{fig:decomposition}).
+Tightening the solvers by three orders of magnitude leaves a maximum
+residual of $5 \times 10^{-4}$ bits against gaps of $1$--$11$ bits, the
+remainder attributable to the marginal-extraction systematic rather
+than convergence.  The entire triangle violation is the
+\emph{prior-specialisation credit}: what a leg saves by abandoning the
+journey's action marginal for its own.  Segmentation pays where route
+pieces want \emph{different marginals}, not where trajectories overlap.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.98\textwidth]{F-switching-cost-decomposition.png}
+  \caption[Decomposing the triangle violation]{The triangle violation is
+  prior specialisation.  \emph{Left:} on violating triples the
+  prior-specialisation credit PS matches or exceeds the gap (log--log;
+  at or below the diagonal = fully explained).  \emph{Middle:} sharing
+  the prior collapses the gap distribution below zero.  \emph{Right:}
+  violation rate before and after removing prior specialisation ---
+  zero survivors at every $\beta$.}
+  \label{fig:decomposition}
+\end{figure}
+
+\paragraph{The unstated assumption in the disjoint-support theorem.}
+The supplementary theorem of \citet{Archer2022-space-of-goals} states
+that essentially disjoint supports imply the triangle inequality.  Its
+proof glues the two subpolicies into one and splits the glued free
+energy into the two legs' free energies --- but in that expansion every
+log term is written against a \emph{single} marginal $\hat{p}(a)$: the
+same symbol in the leg-one terms, the leg-two terms, and the glued
+policy's cost.  The split is an identity only when all three quantities
+are referenced to one common prior, whereas the theorem's right-hand
+side is defined with each leg's own self-consistent marginal
+($\hat{p}_1 \neq \hat{p}_2$ in general).  Disjointness is needed only so
+the glued policy is well defined; the load-bearing assumption is the
+shared prior.  Made explicit, the proof establishes:
+
+\begin{theorem}[common-prior glueing; \citealp{Archer2022-space-of-goals},
+assumption made explicit]
+\label{thm:common-prior}
+If the supports of $\pi_1$ (goal $s'$, from $s$) and $\pi_2$ (goal $g$,
+from $s'$) intersect only at $s'$, then for every state-independent
+reference $q$,
+$\Fen^{q}_g(s) \leq \Fen^{\pi_1, q}_{s'}(s) + \Fen^{\pi_2, q}_g(s')$.
+\end{theorem}
+
+\begin{proposition}[conjectured: the disjointness condition is
+unnecessary]
+\label{prop:no-disjointness}
+With a common reference $q$, the free energy is a quasi-metric with no
+condition on support overlap.  For deterministic dynamics this is exact
+(path concatenation makes $2^{-\beta \Fen^{q}}$ superadditive); for
+stochastic dynamics we verify it empirically to below $10^{-3}$ bits on
+$59{,}280$ triples at solver tolerance $10^{-8}$, and a proof is open.
+\end{proposition}
+
+\begin{corollary}[the relaxed triangle inequality, resolved]
+\label{cor:relaxed}
+With per-leg self-consistent marginals --- the quantities the geometry
+actually uses ---
+\[
+  \Fen_g(s) \;\leq\; \Fen_{s'}(s) + \Fen_g(s') + C_{\mathrm{switch}},
+  \qquad
+  C_{\mathrm{switch}} \;=\; \min_q\, [\, \Delta_1(q) + \Delta_2(q) \,]
+  \;=\; \tfrac{n_1 + n_2}{\beta}\,
+  \mathrm{JS}_w\!\left( \rho_1, \rho_2 \right),
+\]
+with $w = n_1 / (n_1 + n_2)$ and $\mathrm{JS}_w$ the weighted
+Jensen--Shannon divergence, since the $q$ minimising the summed
+swap costs \eqref{eq:prior-swap} is the visit-weighted mixture of the
+two legs' marginals.
+\end{corollary}
+
+\paragraph{Reading the closed form.}  $C_{\mathrm{switch}}$ vanishes iff
+$\rho_1 = \rho_2$ --- marginal agreement, not support disjointness.  It
+equals $I(M; A)$, the mutual information between the section variable
+$M$ (which leg) and the action: the switching cost is the part of
+``which leg am I on'' that is \emph{visible in the actions}.  And it is
+bounded by $H(M) = H_b(w)$ --- so the disambiguation entropy of the
+original conjecture survives as the exact upper envelope of the true
+term: the right object, at the level of action marginals rather than
+per-state membership.  In our implementation the live distribution is
+uniform, so marginals are goal-indexed and the choice $q = \hat{p}_g$
+zeroes $\Delta_2$ exactly, giving the one-sided working bound
+$\mathrm{gap} \leq \Delta_1(\hat{p}_g)$.  This bound held on
+$100.0\%$ of $\sim\!350{,}000$ ordered triples across six labelling
+frames, predicting the measured credit at $r = 0.995$ (Cartesian) and
+$r = 0.93$--$0.96$ (evolved twists).
+
+\paragraph{The twisted geometry, repriced.}  Section
+\ref{sec:segmentation} showed the exemplar twist amplifies triangle
+violations while cheapening the mean route; the corrected theory says
+the amplification must be carried by the per-goal marginals, and it is
+(Figure~\ref{fig:twist-ps}).  Across a cohort of five evolved twists
+spanning dominant-label coverage $0.38$--$0.85$: pairwise marginal
+divergence rises from a Cartesian median of $0.79$ bits to
+$1.24$--$4.44$; the prior-specialisation credit separates cleanly along
+the habit flow --- goal pairs whose marginals both load the dominant
+label carry a median credit of $0.6$--$1.9$ bits-equivalent against
+$6.1$--$15.9$ off-flow, a $4$--$8\times$ split in every twist, with
+$\mathrm{corr}(\text{marginal KL}, \text{credit}) = 0.89$--$0.93$.  The
+home-cycle flow is a \emph{marginal-compatibility class}: legs that
+ride it segment for free, and the twist's extra violations live on the
+class boundary.  Violation \emph{rate} and marginal \emph{divergence}
+measure different things --- the saturated twists violate most often
+($3.3\%$/$2.7\%$ of triples against $1.2$--$1.8\%$ for the fragmented
+ones), while the fragmented twists have the most divergent marginals: a
+coherent flow makes two-leg routes profitable \emph{often}; divergent
+vocabularies make each one \emph{large}.  This is
+Section~\ref{sec:segmentation}'s ``bent, not flattened'' made
+quantitative: what evolution bends is the marginal-compatibility
+structure of the space of goals.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.98\textwidth]{F-twist-prior-specialisation.png}
+  \caption[Prior specialisation under the exemplar twist]{Prior
+  specialisation in the twisted frame (\code{four\_rooms} exemplar).
+  \emph{Left:} violations against the specialisation credit across
+  $\beta$.  \emph{Middle:} the one-sided bound
+  $\Delta_1(\hat{p}_g)$ upper-bounds the measured credit on every
+  triple.  \emph{Right:} median credit by midpoint goal; the dominant
+  label's home cycle (rings) sits in the low-credit region --- the flow
+  is a marginal-compatibility class.}
+  \label{fig:twist-ps}
+\end{figure}
+
+% TODO [GB:01-03]: the habit-abandonment thread still to port here --
 %   SC(A->B) = F_B^{ref=pi_A}(A), log-domain fixed-reference solver;
 %   H1 ambient drift predicts a minority share (r = 0.52, slope 7.3);
 %   H2 policy-specific asymmetry dominates (14.5x the uniform-prior skew);
