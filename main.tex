@@ -273,6 +273,37 @@ entropy of section membership accumulated over the shared states.  We
 tested that reading and refuted it; the corrected theory is stated below
 and validated to numerical precision.
 
+In plain terms, the finding is this.  Every route pursued efficiently
+under a decision budget settles into a \emph{habitual mix of moves} ---
+mostly-east, say, with occasional corrections --- and it is deviations
+from that mix, not the moves themselves, that cost decisions.  The
+direct journey must run on one mix; a journey split at a waypoint runs
+each leg on its own.  Wherever the two legs want \emph{different} mixes,
+the split journey is cheaper than the direct one --- the way a two-leg
+air fare can undercut the direct flight
+(Figure~\ref{fig:stopover}).  The 2022 conjecture priced the split as
+the cost of \emph{remembering which leg you are on}.  The experiments
+below show that this is the wrong ledger: remembering turns out to be
+nearly free, and \emph{changing vocabulary} is what the discount
+actually pays for.  Nothing in this reading softens the formal result
+--- the discount is exactly the free-energy triangle violation, and the
+vocabulary change is exactly the difference between the legs' action
+marginals.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.98\textwidth]{F-stopover-schematic.png}
+  \caption[Why a stopover can beat the direct route (schematic)]{Why a
+  stopover can beat the direct route.  A journey run directly must use
+  one habitual mix of moves throughout (\emph{left}); split at a
+  waypoint, each leg runs on its own mix (\emph{middle}).  Where the
+  two legs want different mixes, the split journey is cheaper, and the
+  discount is exactly the value of changing vocabulary at the waypoint
+  (\emph{right}; illustrative numbers --- the measured version is
+  Figure~\ref{fig:decomposition}).}
+  \label{fig:stopover}
+\end{figure}
+
 \paragraph{Setup.}  For a memoryless policy $\pi$ and a
 \emph{state-independent} reference distribution $q$ over actions, write
 \[
@@ -329,13 +360,15 @@ pieces want \emph{different marginals}, not where trajectories overlap.
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.98\textwidth]{F-switching-cost-decomposition.png}
-  \caption[Decomposing the triangle violation]{The triangle violation is
-  prior specialisation.  \emph{Left:} on violating triples the
-  prior-specialisation credit PS matches or exceeds the gap (log--log;
-  at or below the diagonal = fully explained).  \emph{Middle:} sharing
-  the prior collapses the gap distribution below zero.  \emph{Right:}
-  violation rate before and after removing prior specialisation ---
-  zero survivors at every $\beta$.}
+  \caption[Decomposing the triangle violation]{The stopover discount is
+  entirely the vocabulary change.  \emph{Left:} for every
+  cheaper-via-a-waypoint route, the discount (gap) never exceeds what
+  the first leg saves by using its own habitual mix instead of the
+  journey's (PS); points at or below the diagonal are fully explained
+  (log--log).  \emph{Middle:} force both legs to share one mix and the
+  discount vanishes --- the gap distribution collapses below zero.
+  \emph{Right:} the violation rate drops to exactly zero at every
+  $\beta$ once the vocabulary credit is removed.}
   \label{fig:decomposition}
 \end{figure}
 
@@ -390,14 +423,18 @@ two legs' marginals.
 \end{corollary}
 
 \paragraph{Reading the closed form.}  $C_{\mathrm{switch}}$ vanishes iff
-$\rho_1 = \rho_2$ --- marginal agreement, not support disjointness.  It
-equals $I(M; A)$, the mutual information between the section variable
+$\rho_1 = \rho_2$ --- marginal agreement, not support disjointness: if
+both legs move the same way, there is nothing to keep track of and
+nothing to pay, however much their paths overlap.  It equals
+$I(M; A)$, the mutual information between the section variable
 $M$ (which leg) and the action: the switching cost is the part of
-``which leg am I on'' that is \emph{visible in the actions}.  And it is
-bounded by $H(M) = H_b(w)$ --- so the disambiguation entropy of the
-original conjecture survives as the exact upper envelope of the true
-term: the right object, at the level of action marginals rather than
-per-state membership.  In our implementation the live distribution is
+``which leg am I on'' that is \emph{visible in the actions} --- you pay
+for tracking the leg only to the extent that your moves would give it
+away.  And it is bounded by $H(M) = H_b(w)$, at most a coin-flip's
+worth of information per expected step --- so the disambiguation
+entropy of the original conjecture survives as the exact upper envelope
+of the true term: the right object, at the level of action marginals
+rather than per-state membership.  In our implementation the live distribution is
 uniform, so marginals are goal-indexed and the choice $q = \hat{p}_g$
 zeroes $\Delta_2$ exactly, giving the one-sided working bound
 $\mathrm{gap} \leq \Delta_1(\hat{p}_g)$.  This bound held on
@@ -432,14 +469,15 @@ structure of the space of goals.
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.98\textwidth]{F-twist-prior-specialisation.png}
-  \caption[Prior specialisation under the exemplar twist]{Prior
-  specialisation in the twisted frame (\code{four\_rooms} exemplar).
-  \emph{Left:} violations against the specialisation credit across
-  $\beta$.  \emph{Middle:} the one-sided bound
+  \caption[Prior specialisation under the exemplar twist]{The same
+  ledger in the evolved world (\code{four\_rooms} exemplar).
+  \emph{Left:} every stopover discount stays within the vocabulary
+  credit, across $\beta$.  \emph{Middle:} the closed-form bound
   $\Delta_1(\hat{p}_g)$ upper-bounds the measured credit on every
-  triple.  \emph{Right:} median credit by midpoint goal; the dominant
-  label's home cycle (rings) sits in the low-credit region --- the flow
-  is a marginal-compatibility class.}
+  triple.  \emph{Right:} goals that lie along the evolved habit share
+  one vocabulary, so waypoints there offer no discount --- the habit's
+  home cycle (rings) sits in the dark, low-credit region.  The habit
+  flow is a marginal-compatibility class.}
   \label{fig:twist-ps}
 \end{figure}
 
