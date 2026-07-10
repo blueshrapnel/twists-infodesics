@@ -185,14 +185,14 @@ by parsimony.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.98\textwidth]{F-triangle-violation.png}
-  \caption[Triangle-inequality violation across the palette]{Triangle
-  violations in the Cartesian free-energy geometry.  \emph{Left:}
-  violating fraction of ordered goal triples by environment and $\beta$
-  --- zero on flat worlds at every $\beta$.  \emph{Middle:} gap
-  distributions at $\beta = 1$ (positive = segmenting is cheaper).
-  \emph{Right:} where the profitable midpoints sit on
-  \code{four\_rooms}: flanking the doorways.}
+  \includegraphics[width=0.98\textwidth]{F-triangle-violation-journal.png}
+  \caption[Triangle-inequality violation across the palette]{Stopovers
+  that beat the direct route, before any relabelling (standard compass
+  controls).  \emph{Left:} the share of (start, stopover, goal) choices
+  where the stopover wins --- exactly zero on the flat worlds at every
+  $\beta$.  \emph{Middle:} the size of the discounts at $\beta = 1$
+  (positive: the stopover route is cheaper).  \emph{Right:} where the
+  winning stopovers sit in the four-room world: flanking the doorways.}
   \label{fig:triangle}
 \end{figure}
 
@@ -212,13 +212,16 @@ geometric and the behavioural ledger, is what walls make.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.98\textwidth]{F-segmentation-switch-points.png}
-  \caption[Switch points along greedy routes]{Label-switch locations
-  along greedy routes (switch rate per visit; doorways outlined).
-  Cartesian \code{four\_rooms}, the evolved exemplar twist, and the flat
-  control; right, geometry against behaviour.  Doors are corridors, not
-  decision points; the twist needs $40\%$ fewer switches; the flat world
-  switches everywhere and nowhere in particular.}
+  \includegraphics[width=0.98\textwidth]{F-segmentation-switch-points-journal.png}
+  \caption[Switch points along greedy routes]{Where routes change
+  control.  Control-change rate per visit along greedy routes, doorways
+  outlined: under compass controls the rate is exactly zero \emph{in}
+  the doorways and maximal on their flanks --- the flow passes through
+  a door; the decision happens after it.  The evolved relabelling needs
+  $40\%$ fewer control changes on the same routes; the flat control
+  switches everywhere and nowhere in particular.  \emph{Right:} the
+  cells where geometry offers a winning stopover are the cells where
+  behaviour changes control, $r = 0.72$.}
   \label{fig:switch}
 \end{figure}
 
@@ -244,12 +247,14 @@ segmentation.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.85\textwidth]{F-triangle-twist-vs-cartesian.png}
-  \caption[Twist-side triangle violations]{Profitable-midpoint counts,
-  Cartesian against the evolved exemplar twist (\code{four\_rooms},
-  $\beta = 1$).  The twist multiplies profitable segmentation pairs
-  ($610$ against $258$ of $1{,}560$) while lowering mean direct cost:
-  the geometry is bent, not flattened.}
+  \includegraphics[width=0.85\textwidth]{F-triangle-twist-vs-cartesian-journal.png}
+  \caption[Twist-side triangle violations]{Evolution multiplies the
+  cheap stopovers while cheapening direct travel.  How often each cell
+  is the winning stopover, standard compass controls against the
+  evolved relabelling (four-room world, $\beta = 1$): $610$ against
+  $258$ of $1{,}560$ start--goal journeys acquire a cheaper stopover
+  route while the mean direct cost falls --- the geometry is bent, not
+  flattened.}
   \label{fig:twist-triangle}
 \end{figure}
 
@@ -395,6 +400,10 @@ reference $q$,
 $\Fen^{q}_g(s) \leq \Fen^{\pi_1, q}_{s'}(s) + \Fen^{\pi_2, q}_g(s')$.
 \end{theorem}
 
+\noindent\emph{In plain terms:} if the two legs never share ground and
+both are priced against the same habitual mix of moves, no stopover can
+beat the direct route.
+
 \begin{proposition}[conjectured: the disjointness condition is
 unnecessary]
 \label{prop:no-disjointness}
@@ -404,6 +413,11 @@ condition on support overlap.  For deterministic dynamics this is exact
 stochastic dynamics we verify it empirically to below $10^{-3}$ bits on
 $59{,}280$ triples at solver tolerance $10^{-8}$, and a proof is open.
 \end{proposition}
+
+\noindent\emph{In plain terms:} one shared vocabulary is enough on its
+own --- no stopover ever beats the direct route, shared ground or not;
+exactly so in deterministic worlds, and to within a thousandth of a bit
+in our stochastic ones.
 
 \begin{corollary}[the relaxed triangle inequality, resolved]
 \label{cor:relaxed}
@@ -421,6 +435,12 @@ Jensen--Shannon divergence, since the $q$ minimising the summed
 swap costs \eqref{eq:prior-swap} is the visit-weighted mixture of the
 two legs' marginals.
 \end{corollary}
+
+\noindent\emph{In plain terms:} when each leg runs on its own
+vocabulary, a stopover can beat the direct route --- but by at most the
+journey's expected length times how distinguishable the two legs'
+habitual mixes are (in bits), at the going exchange rate $1/\beta$
+between decisions and steps.
 
 \paragraph{Reading the closed form.}  $C_{\mathrm{switch}}$ vanishes iff
 $\rho_1 = \rho_2$ --- marginal agreement, not support disjointness: if
